@@ -129,8 +129,8 @@ google.charts.load(
 google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
-  drawChange(partyData, 'changeChart');
-  drawElectionChange(partyData, 'columnChange2')
+  drawChange(partyData, 'changeChart', 'Förändring sedan senaste mätning');
+  drawElectionChange(partyData, 'columnChange2', 'Förändring sedan valet 2022')
   drawStacked(partyData, 'stackedChart');
   drawBarsV(partyData, 'barChartV');
   drawLines(partyData, 'lineChart');
@@ -155,7 +155,7 @@ function drawChange(dataObject, chartId, title) {
   
   const data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
-    ['Förändring sedan senaste mätning ', ...dataObject.changeSinceLast],
+    ['', ...dataObject.changeSinceLast],
   ]);
 
   const chart = new google.visualization.ColumnChart(
@@ -176,7 +176,7 @@ function drawElectionChange(dataObject, chartId, title = "") {
   
   const data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
-    ['Förändring sedan valet ', ...dataObject.changeSinceElection],
+    ['', ...dataObject.changeSinceElection],
   ]);
 
   const chart = new google.visualization.ColumnChart(
