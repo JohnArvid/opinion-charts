@@ -53,6 +53,16 @@ const partyData = {
     0.3,
     3.0,
     0.3 ],
+    changeSinceElection: [
+    1.3,
+    -0.3, 
+    7.6,
+    -2.6,
+    -2.3,
+    -3.0,
+    -2.4,
+    1.5,
+    0.3 ],
   month: "Oktober",
   year: 2023,
   history: [
@@ -101,7 +111,6 @@ const ministerData = {
 
 // Constructor for options object
 function Options() {
-  this.title = `Väljarbarometer ${partyData.month} ${partyData.year}`,
   this.colors = Object.values(partyData.seriesColors);
   this.fontName = 'Questrial'
 }
@@ -121,6 +130,7 @@ google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
   drawChange(partyData, 'changeChart');
+  drawElectionChange(partyData, 'columnChange2')
   drawStacked(partyData, 'stackedChart');
   drawBarsV(partyData, 'barChartV');
   drawLines(partyData, 'lineChart');
@@ -137,10 +147,11 @@ window.onresize = drawCharts;
 // FUNCTIONS TO DRAW CHARTS
 
 // Columns for change since last
-function drawChange(dataObject, chartId) {
+function drawChange(dataObject, chartId, title) {
 
   const options = new Options();
   options.legend = {position: 'none'};
+  options.title = title;
   
   const data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
@@ -154,11 +165,33 @@ function drawChange(dataObject, chartId) {
   chart.draw(data, options);
 }
 
+
+
+// Columns for any change since last
+function drawElectionChange(dataObject, chartId, title = "") {
+
+  const options = new Options();
+  options.legend = {position: 'none'};
+  options.title = title;
+  
+  const data = new google.visualization.arrayToDataTable([
+    ['', ...dataObject.seriesNames],
+    ['Förändring sedan valet ', ...dataObject.changeSinceElection],
+  ]);
+
+  const chart = new google.visualization.ColumnChart(
+    document.getElementById(chartId)
+    );
+
+  chart.draw(data, options);
+}
+
 // Stacked for spread across categories
-function drawStacked(dataObject, chartId) {
+function drawStacked(dataObject, chartId, title = "") {
 
   const options = new Options();
   options.isStacked = 'percent';
+  options.title = title;
   
   const data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
@@ -175,10 +208,11 @@ function drawStacked(dataObject, chartId) {
 
 
 // Columns for spread across categories
-function drawBarsV(dataObject, chartId) {
+function drawBarsV(dataObject, chartId, title = "") {
 
   const options = new Options();
   options.legend = {position: 'none'};
+  options.title = title;
 
   const dataArray = dataObject.seriesNames.map( (party, i) => {
     return (
@@ -207,10 +241,11 @@ function drawBarsV(dataObject, chartId) {
 
 
 // Line chart for history/trendlines
-function drawLines(dataObject, chartId) {
+function drawLines(dataObject, chartId, title = "") {
 
   const options = new Options();
   options.colors = Object.values(dataObject.seriesColors);
+  options.title = title;
  
   const data = new google.visualization.arrayToDataTable([
     ['', ...(
