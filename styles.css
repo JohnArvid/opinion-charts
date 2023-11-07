@@ -1,0 +1,67 @@
+div.container {
+	padding: 6% 1%;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+div.chart-container {
+	min-height: 450px;
+	width: 50%;
+}
+
+div.table-container {
+	padding: 2%;
+	width: 50%;
+}
+
+div.table-container.full-width, div.chart-container.full-width {
+	width: 100%;
+}
+
+div.chart {
+	width: 100%;
+	height: 100%;
+}
+
+div.table {
+	width: min-content;
+	height: 100%;
+	margin: 0 auto;
+}
+
+div.chart table.google-visualization-table-table {
+	font-family: 'Questrial';
+}
+
+/*div.google-visualization-table {
+	min-width: 100%;
+}*/
+
+table.google-visualization-table-table th, 
+table.google-visualization-table-table td {
+	padding: 0.6em 1.35em;
+}
+
+
+@media screen and (max-width: 1274px ){
+	div.table-container {
+/*		margin: 2em auto;*/
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 750px ){
+	div.chart-container {
+		min-height: 450px;
+		margin: 0 auto;
+		width: 100%;
+	}
+	div.table {
+		width: 100%;
+		height: 100%;
+		margin: 0 auto;
+	}
+	.google-visualization-table-table {
+	    font-size: 0.8em;
+	}
+}
