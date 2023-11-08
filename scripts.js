@@ -133,11 +133,13 @@ function drawCharts() {
   drawElectionChange(partyData, 'columnChange2', 'Förändring sedan valet 2022')
   drawStacked(partyData, 'stackedChart');
   drawBarsV(partyData, 'barChartV');
-  drawLines(partyData, 'lineChart');
-  drawLines(blockData, 'lineChartByBlock');
-  drawLines(ministerData, 'lineChartByMinister');
   drawTable(partyData, 'table', true);
-  drawTable(partyData, 'table2', false);
+  drawElectionChange(partyData, 'columnChange2', 'Förändring sedan valet 2022')
+
+  // drawLines(partyData, 'lineChart');
+  // drawLines(blockData, 'lineChartByBlock');
+  // drawLines(ministerData, 'lineChartByMinister');
+  // drawTable(partyData, 'table2', false);
 }
 
 // Listen for window resize and redraw charts 
@@ -272,12 +274,14 @@ function drawTable(dataObject, chartId, transposeTable) {
   if(transposeTable) {
     data = new google.visualization.arrayToDataTable(transpose([
     ['', ...dataObject.seriesNames],
-    ...dataObject.history
+    ...dataObject.history,
+    ['Förändring sedan föregående mätning', ...dataObject.changeSinceLast]
     ]));
   } else {
     data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
-    ...dataObject.history
+    ...dataObject.history,
+    ['Förändring sedan föregående mätning', ...dataObject.changeSinceLast]
     ]);
   }
 
