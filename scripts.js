@@ -153,6 +153,14 @@ function drawChange(dataObject, chartId, title) {
   const options = new Options();
   options.legend = {position: 'none'};
   options.title = title;
+  options.vAxis = {
+    viewWindow: {
+      max: 8,
+      min: -8.
+    },
+    viewWindowMode: 'pretty',
+  };
+  
   
   const data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
@@ -282,6 +290,7 @@ function drawLines(dataObject, chartId, title = "") {
   const options = new Options();
   options.colors = Object.values(dataObject.seriesColors);
   options.title = title;
+  options.pointSize = 5;
  
   const data = new google.visualization.arrayToDataTable([
     ['', ...(
