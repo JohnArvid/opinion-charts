@@ -231,6 +231,9 @@ function drawBarsH(dataObject, chartId, title = "") {
   const options = new Options();
   options.legend = {position: 'none'};
   options.title = title;
+  options.hAxis = {
+    ticks: [0, 4, 10, 20, 30, 40, 50]
+  }
 
   const dataArray = dataObject.seriesNames.map( (party, i) => {
     return (
@@ -265,6 +268,9 @@ function drawBarsV(dataObject, chartId, title = "") {
   const options = new Options();
   options.legend = {position: 'none'};
   options.title = title;
+  options.vAxis = {
+    ticks: [0, 4, 10, 20, 30, 40, 50]
+  }
 
   const dataArray = dataObject.seriesNames.map( (party, i) => {
     return (
