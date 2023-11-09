@@ -130,12 +130,13 @@ google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
   drawChange(partyData, 'changeChart', 'Förändring sedan senaste mätning');
+  drawElectionChange(partyData, 'electionChange', 'Förändring sedan valet 2022')
   drawStacked(partyData, 'stackedChart', 'Spridningsdiagram');
   drawBarsV(partyData, 'barChartV', 'Stående kolumner med tooltips'); 
   drawBarsH(partyData, 'barChartH', 'Liggande kolumner');
-  drawLines(partyData, 'lineChart');
-  drawLines(blockData, 'lineChartByBlock');
-  drawLines(ministerData, 'lineChartByMinister');
+  drawLines(partyData, 'lineChart', 'Trend per parti');
+  drawLines(blockData, 'lineChartByBlock', 'Trend per block');
+  drawLines(ministerData, 'lineChartByMinister', 'Trend per statsministerkandidat');
   drawTable(partyData, 'table', true);
   drawTable(partyData, 'table2', false);
 }
