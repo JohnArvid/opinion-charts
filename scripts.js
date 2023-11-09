@@ -130,16 +130,14 @@ google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
   drawChange(partyData, 'changeChart', 'Förändring sedan senaste mätning');
-  drawElectionChange(partyData, 'columnChange2', 'Förändring sedan valet 2022')
-  drawStacked(partyData, 'stackedChart');
-  drawBarsV(partyData, 'barChartV');
+  drawStacked(partyData, 'stackedChart', 'Spridningsdiagram');
+  drawBarsV(partyData, 'barChartV', 'Stående kolumner med tooltips'); 
+  drawBarsH(partyData, 'barChartH', 'Liggande kolumner');
+  drawLines(partyData, 'lineChart');
+  drawLines(blockData, 'lineChartByBlock');
+  drawLines(ministerData, 'lineChartByMinister');
   drawTable(partyData, 'table', true);
-  drawElectionChange(partyData, 'columnChange2', 'Förändring sedan valet 2022')
-
-  // drawLines(partyData, 'lineChart');
-  // drawLines(blockData, 'lineChartByBlock');
-  // drawLines(ministerData, 'lineChartByMinister');
-  // drawTable(partyData, 'table2', false);
+  drawTable(partyData, 'table2', false);
 }
 
 // Listen for window resize and redraw charts 
@@ -207,7 +205,42 @@ function drawStacked(dataObject, chartId, title = "") {
   chart.draw(data, options);
 }
 
+function drawBarsH(dataObject, chartId, title = "") {
 
+  const options = new Options();
+  options.legend = {position: 'none'};
+  options.title = title;
+
+  const dataArray = dataObject.seriesNames.map( (party, i) => {
+    return (
+      [party, dataObject.results[i], 
+        dataObject.results[i], 
+        Object.values(dataObject.seriesColors)[i], 
+        // `Förändring sedan senaste mätning ${dataObject.changeSinceLast[i]}` 
+        ]
+      );
+  })
+  
+  const data = google.visualization.arrayToDataTable([
+    ['Parti', 'Andel %', 
+      {role: 'annotation'}, 
+      {role: 'style'}, 
+      // {role: 'tooltip'}
+      ],
+    ...dataArray 
+    ]);
+
+  // const data = new google.visualization.arrayToDataTable([
+  //   ['', ...dataObject.seriesNames],
+  //   ['', ...dataObject.results],
+  //   ]);
+
+  const chart = new google.visualization.BarChart(
+    document.getElementById(chartId)
+    );
+
+  chart.draw(data, options);
+}
 
 // Columns for spread across categories
 function drawBarsV(dataObject, chartId, title = "") {
