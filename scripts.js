@@ -166,7 +166,10 @@ function drawChange(dataObject, chartId, title) {
   const chart = new google.visualization.ColumnChart(
     document.getElementById(chartId)
     );
-
+  console.log([
+    ['', ...dataObject.seriesNames],
+    ['', ...dataObject.changeSinceLast],
+  ]);
   chart.draw(data, options);
 }
 
@@ -200,6 +203,16 @@ function drawStacked(dataObject, chartId, title = "") {
   const options = new Options();
   options.isStacked = 'percent';
   options.title = title;
+  options.hAxis = {
+    gridlines: {
+      color: '#333', 
+      minSpacing: 500
+    },
+    minorGridlines: {
+      color: '#ddd', 
+      minSpacing: 50
+    },
+   }
   
   const data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
@@ -238,10 +251,6 @@ function drawBarsH(dataObject, chartId, title = "") {
     ...dataArray 
     ]);
 
-  // const data = new google.visualization.arrayToDataTable([
-  //   ['', ...dataObject.seriesNames],
-  //   ['', ...dataObject.results],
-  //   ]);
 
   const chart = new google.visualization.BarChart(
     document.getElementById(chartId)
