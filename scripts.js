@@ -154,11 +154,7 @@ function drawChange(dataObject, chartId, title) {
   options.legend = {position: 'none'};
   options.title = title;
   options.vAxis = {
-    viewWindow: {
-      max: 8,
-      min: -8.
-    },
-    viewWindowMode: 'pretty',
+    ticks: [-8, -6, -4, -2, 0, +2, +4, +6, +8]
   };
   
   
@@ -182,6 +178,9 @@ function drawElectionChange(dataObject, chartId, title = "") {
   const options = new Options();
   options.legend = {position: 'none'};
   options.title = title;
+  options.vAxis = {
+    ticks: [-8, -6, -4, -2, 0, +2, +4, +6, +8]
+  }
   
   const data = new google.visualization.arrayToDataTable([
     ['', ...dataObject.seriesNames],
