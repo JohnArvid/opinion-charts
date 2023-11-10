@@ -129,7 +129,8 @@ google.charts.load(
 google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
-  drawChange(partyData, 'changeChart', 'Förändring sedan senaste mätning');
+  // Remove 'stroke' to make it normal
+  drawChangeStroke(partyData, 'changeChart', 'Förändring sedan senaste mätning');
   drawElectionChange(partyData, 'electionChange', 'Förändring sedan valet 2022')
   drawStacked(partyData, 'stackedChart', 'Spridningsdiagram');
   drawBarsV(partyData, 'barChartV', 'Stående kolumner med tooltips'); 
@@ -166,16 +167,47 @@ function drawChange(dataObject, chartId, title) {
   const chart = new google.visualization.ColumnChart(
     document.getElementById(chartId)
     );
-  console.log([
-    ['', ...dataObject.seriesNames],
-    ['', ...dataObject.changeSinceLast],
-  ]);
+
   chart.draw(data, options);
 }
 
+// Columns for change since last
+function drawChangeStroke(dataObject, chartId, title) {
 
+  const options = new Options();
+  options.legend = {position: 'none'};
+  options.title = title;
+  options.vAxis = {
+    ticks: [-8, -6, -4, -2, 0, +2, +4, +6, +8]
+  };
+  
+  
+  const dataArray = dataObject.seriesNames.map( (party, i) => {
+    return (
+      [party, dataObject.changeSinceLast[i], 
+        // dataObject.changeSinceLast[i], 
+        `stroke-color: #333; stroke-width: 2; fill-color: ${Object.values(dataObject.seriesColors)[i]}`, 
 
-// Columns for any change since last
+        ]
+      );
+  })
+  
+  const data = google.visualization.arrayToDataTable([
+    ['Parti', 'Förändring sedan senaste mätning%', 
+      // {role: 'annotation'}, 
+      {role: 'style'}, 
+      ],
+    ...dataArray 
+    ]);
+
+  const chart = new google.visualization.ColumnChart(
+    document.getElementById(chartId)
+    );
+
+  chart.draw(data, options);
+}
+
+// Columns for change since election
 function drawElectionChange(dataObject, chartId, title = "") {
 
   const options = new Options();
