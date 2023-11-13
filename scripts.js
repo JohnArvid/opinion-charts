@@ -140,7 +140,7 @@ function drawCharts() {
   drawLines(ministerData, 'lineChartByMinister', 'Trend per statsministerkandidat');
   drawTable(partyData, 'table', true);
   drawTable(partyData, 'table2', false);
-  // addLogo();
+  addLogo();
 }
 
 // Listen for window resize and redraw charts 
@@ -381,3 +381,6 @@ function drawTable(dataObject, chartId, transposeTable) {
   
   table.draw(data, options);
 }
+
+
+
