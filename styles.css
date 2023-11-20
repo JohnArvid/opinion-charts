@@ -5,7 +5,7 @@ div.container {
 }
 
 div.chart-container {
-	min-height: 450px;
+	height: 450px;
 	width: 50%;
 }
 
@@ -27,6 +27,7 @@ div.table {
 	width: min-content;
 	height: 100%;
 	margin: 0 auto;
+	padding-top: 3em;
 }
 
 div.chart table.google-visualization-table-table {
@@ -52,7 +53,7 @@ table.google-visualization-table-table td {
 
 @media screen and (max-width: 750px ){
 	div.chart-container {
-		min-height: 450px;
+		height: 450px;
 		margin: 0 auto;
 		width: 100%;
 	}
