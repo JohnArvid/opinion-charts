@@ -141,6 +141,7 @@ function drawCharts() {
   drawTable(partyData, 'table', true);
   drawTable(partyData, 'table2', false);
   addLogo();
+  lineBreakTh();
 }
 
 // Listen for window resize and redraw charts 
