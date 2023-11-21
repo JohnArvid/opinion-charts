@@ -129,9 +129,9 @@ google.charts.load(
 google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
-  // Remove 'stroke' to make it normal
-  drawChangeStroke(partyData, 'changeChart', 'Förändring sedan senaste mätning');
-  drawElectionChange(partyData, 'electionChange', 'Förändring sedan valet 2022')
+  drawChange(partyData, 'changeChart', 'Förändring sedan senaste mätning');
+  drawChangeStroke(partyData, 'changeChartStroke', 'Förändring sedan senaste mätning');
+  drawElectionChange(partyData, 'electionChange', 'Förändring sedan valet 2022');
   drawStacked(partyData, 'stackedChart', 'Spridningsdiagram');
   drawBarsV(partyData, 'barChartV', 'Stående kolumner med tooltips'); 
   drawBarsH(partyData, 'barChartH', 'Liggande kolumner');
