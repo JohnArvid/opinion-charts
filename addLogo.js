@@ -4,7 +4,7 @@
 function addLogo() {
   let css = "display: flex; flex-flow: column; align-items: end; margin: 0px 12%; position: relative; top: 16%;";
   let tableCss = "display: flex; flex-flow: column; align-items: end; margin: 0; position: relative; top: 0;";
-  let src = 'https://www.indikator.org/wp-content/uploads/2023/06/Logo_temp.png';
+  let src = 'assets/chart-logo.png'/*'https://www.indikator.org/wp-content/uploads/2023/06/Logo_temp.png'*/;
   let nodes = document.querySelectorAll('.chart');
   
   
