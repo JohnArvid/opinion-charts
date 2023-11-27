@@ -280,7 +280,7 @@ function drawBarsH(dataObject, chartId, title = "") {
   })
   
   const data = google.visualization.arrayToDataTable([
-    ['Parti', 'Andel %', 
+    ['', 'Andel %', 
       {role: 'annotation'}, 
       {role: 'style'}, 
       // {role: 'tooltip'}
