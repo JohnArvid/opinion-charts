@@ -129,9 +129,10 @@ google.charts.load(
 google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
-  drawChange(partyData, 'changeChart', 'Förändring sedan senaste mätning');
-  drawChangeStroke(partyData, 'changeChartStroke', 'Förändring sedan senaste mätning');
-  drawElectionChange(partyData, 'electionChange', 'Förändring sedan valet 2022');
+  // drawChange(partyData, 'changeChart', 'Förändring sedan senaste mätning');
+  drawChangeAnnot(partyData, 'changeSinceLast', 'changeChart', 'Förändring sedan senaste mätning');
+  drawChangeAnnot(partyData, 'changeSinceElection', 'electionChange', 'Förändring sedan valet');
+  // drawElectionChange(partyData, 'electionChange', 'Förändring sedan valet 2022');
   drawStacked(partyData, 'stackedChart', 'Spridningsdiagram');
   drawBarsV(partyData, 'barChartV', 'Stående kolumner med tooltips'); 
   drawBarsH(partyData, 'barChartH', 'Liggande kolumner');
@@ -187,8 +188,9 @@ function drawChangeStroke(dataObject, chartId, title) {
   const dataArray = dataObject.seriesNames.map( (party, i) => {
     return (
       [party, dataObject.changeSinceLast[i], 
-        // dataObject.changeSinceLast[i], 
-        `stroke-color: #333; stroke-width: 2; fill-color: ${Object.values(dataObject.seriesColors)[i]}`, 
+        dataObject.changeSinceLast[i], 
+        // `stroke-color: #333; stroke-width: 2; fill-color: ${Object.values(dataObject.seriesColors)[i]}`, 
+        `fill-color: ${Object.values(dataObject.seriesColors)[i]}`, 
 
         ]
       );
@@ -196,7 +198,45 @@ function drawChangeStroke(dataObject, chartId, title) {
   
   const data = google.visualization.arrayToDataTable([
     ['Parti', 'Förändring sedan senaste mätning%', 
-      // {role: 'annotation'}, 
+      {role: 'annotation'}, 
+      {role: 'style'}, 
+      ],
+    ...dataArray 
+    ]);
+
+  const chart = new google.visualization.ColumnChart(
+    document.getElementById(chartId)
+    );
+
+  chart.draw(data, options);
+}
+
+// Columns for change since last
+function drawChangeAnnot(dataObject, changeSeries, chartId, title) {
+
+  const options = new Options();
+  options.legend = {position: 'none'};
+  options.title = title;
+  options.vAxis = {
+    ticks: [-8, -6, -4, -2, 0, +2, +4, +6, +8]
+  };
+  
+  
+  const dataArray = dataObject.seriesNames.map( (party, i) => {
+    return (
+      [party, dataObject[changeSeries][i], 
+        dataObject[changeSeries][i], 
+        // `stroke-color: #333; stroke-width: 2; fill-color: ${Object.values(dataObject.seriesColors)[i]}`, 
+        `fill-color: ${Object.values(dataObject.seriesColors)[i]}`, 
+
+        ]
+      );
+  })
+  
+  const data = google.visualization.arrayToDataTable([
+    ['Parti', changeSeries == 'changeSinceLast' ? 'Förändring sedan senaste mätning %'
+      :'Förändring sedan valet %', 
+      {role: 'annotation'}, 
       {role: 'style'}, 
       ],
     ...dataArray 
@@ -339,14 +379,15 @@ function drawLines(dataObject, chartId, title = "") {
   options.colors = Object.values(dataObject.seriesColors);
   options.title = title;
   options.pointSize = 5;
- 
+  
   const data = new google.visualization.arrayToDataTable([
-    ['', ...(
-      dataObject.longSeriesNames ? 
-      dataObject.longSeriesNames : 
-      dataObject.seriesNames)],
-    ...dataObject.history
-    ]);
+  ['', ...(
+    dataObject.longSeriesNames ? 
+    dataObject.longSeriesNames : 
+    dataObject.seriesNames)],
+  ...dataObject.history
+  ]);
+  if (dataObject == ministerData) console.log(data);
 
   const chart = new google.visualization.LineChart(
     document.getElementById(chartId)
