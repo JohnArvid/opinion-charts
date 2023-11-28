@@ -213,7 +213,7 @@ function drawChangeStroke(dataObject, chartId, title) {
 function drawElectionChange(dataObject, chartId, title = "") {
 
   const options = new Options();
-  options.legend = {position: 'none'};
+  // options.legend = {position: 'none'};
   options.title = title;
   options.vAxis = {
     ticks: [-8, -6, -4, -2, 0, +2, +4, +6, +8]
