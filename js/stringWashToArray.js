@@ -15,6 +15,6 @@ const stringData = `November (2023)
 function stringWashToArray(stringData){
 	let replaced = stringData.replaceAll(',', '.').replaceAll('\n', ', ');
 	let asArray = replaced.split(', ');
-	asArray.pop()
+	if (asArray[asArray.length -1] == '') asArray.pop();
 	return asArray;
 }
