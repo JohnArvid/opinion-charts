@@ -16,5 +16,10 @@ function stringWashToArray(stringData){
 	let replaced = stringData.replaceAll(',', '.').replaceAll('\n', ', ');
 	let asArray = replaced.split(', ');
 	if (asArray[asArray.length -1] == '') asArray.pop();
-	return asArray;
+	return asArray.map( (item, index) => { if (index > 0) {
+		return +item 
+	} else {
+		return item
+		}
+	});
 }

@@ -9,10 +9,22 @@ function stringWashToArrayTransposed(stringData){
 	if (replaced.indexOf('\n') > 0) {
 		let arrOfStrings = replaced.split('\n');
 		let arrOfArrs = arrOfStrings.map( item => item.split(', '));
-		arrOfArrs.pop();
-		return arrOfArrs;
+		if (arrOfArrs[arrOfArrs.length -1].length == 1) arrOfArrs.pop();
+		return arrOfArrs.map( array => numberConvertAllItemsButFirst(array));
 	}
 
-	return replaced.split(', ');
+	return numberConvertAllItemsButFirst(replaced.split(', '));
 
+}
+
+
+
+function numberConvertAllItemsButFirst(arr) {
+	let mapped = arr.map( (item, index) => { if (index > 0) {
+		return +item 
+	} else {
+		return item
+		}
+	});
+	return mapped;
 }
