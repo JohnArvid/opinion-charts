@@ -1,5 +1,5 @@
 
-const stringData = let string = `November (2023)
+const stringData = `November (2023)
 7,3
 4,3
 38,3
