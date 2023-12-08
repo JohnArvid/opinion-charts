@@ -12,7 +12,7 @@ const stringData = `November (2023)
 `
 
 
-function stringWashToArray(stringData){
+function createDataArrayFromStringVertical(stringData){
 	let replaced = stringData.replaceAll(',', '.').replaceAll('\n', ', ');
 	let asArray = replaced.split(', ');
 	if (asArray[asArray.length -1] == '') asArray.pop();
