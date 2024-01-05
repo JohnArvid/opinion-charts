@@ -1,6 +1,15 @@
 function lineBreakTh() {
 	let selectorString = "#table thead tr th:last-child";
-	let element = document.querySelector(selectorString);
-	let htmlString = 'Förändring sedan <br>föregående mätning<span class="google-visualization-table-sortind"></span>';
-	element.innerHTML = htmlString;
+	let node = document.querySelector(selectorString);
+	let wordArr = node.textContent.split(' ');
+	let span1 = document.createElement('span');
+	let span2 = document.createElement('span');
+	span1.textContent = `${wordArr[0]} ${wordArr[1]}`;
+	span2.textContent = `${wordArr[2]} ${wordArr[3]}`;
+	let lineBreak = document.createElement('br');
+	node.textContent = '';
+
+	node.appendChild(span1);
+	node.appendChild(lineBreak);
+	node.appendChild(span2);
 }
