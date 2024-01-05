@@ -11,51 +11,26 @@ let changeSinceLastString = `-0,1
 0,4
 -0,2
 `;
-let changeSinceElectionString = ``;
-// Utility for table
-function createDataArrayFromString(stringData){
-  // gör generell tvätt först:
-  let replaced = stringData.replaceAll(',', '.').replaceAll('\t', ', ');
-
-  if (replaced.indexOf('\n') > 0) {
-    let arrOfStrings = replaced.split('\n');
-    let arrOfArrs = arrOfStrings.map( item => item.split(', '));
-    if (arrOfArrs[arrOfArrs.length -1].length == 1) arrOfArrs.pop();
-    return arrOfArrs.map( array => convertItemsToNumber(array));
-  }
-
-  return convertItemsToNumber(replaced.split(', '));
-
-}
-
-
-function convertItemsToNumber(arr) {
-  let mapped = arr.map( (item, index) => { if ( isNaN(item) ) {
-    return item 
-  } else {
-    return +item
-    }
-  });
-  return mapped;
-}
-
-// Utility for single columns
-function createDataArrayFromStringVertical(stringData){
-  let replaced = stringData.replaceAll(',', '.').replaceAll('\n', ', ');
-  let asArray = replaced.split(', ');
-  if (asArray[asArray.length -1] == '') asArray.pop();
-  return asArray.map( (item, index) => { if ( isNaN(item) ) {
-    return item 
-  } else {
-    return +item
-    }
-  });
-}
+let changeSinceElectionString = `0,4
+0,2
+6,7
+-3,3
+-1,9
+-1,6
+-2,7
+2,5
+-0,1
+`;
+let predictionString = 'Sämre än 2023\tSamma som 2023\tBättre än 2023\n Inflationen\t20\t40\t40\n Din egen ekonomi \t26\t51\t24\n Sveriges ekonomi\t40\t39\t21\n Gängbrottsligheten\t42\t44\t14\n Det säkerhetspolitiska läget\t45\t46\t8\n'
 
 
 const currentData = createDataArrayFromString(dataAsString);
 const currentBlockData = createDataArrayFromString(blockDataAsString);
 const currentMinisterData = createDataArrayFromString(ministerDataAsString);
+const currentPredictionData = createDataArrayFromString(predictionString);
+
+
+// Actual data objects
 
 const partyData = {
   results: currentData[0].slice(1),
@@ -101,7 +76,7 @@ const partyData = {
 const blockData = {
   results: currentBlockData[0].slice(1), 
   seriesNames:  [ 'M/L/KD/SD', 'S/V/MP/C', ],
-  seriesColors : {
+  seriesColors: {
     m:  partyData.seriesColors.m,
     s:  partyData.seriesColors.s,
   },
@@ -125,6 +100,15 @@ const ministerData = {
   history: currentMinisterData.toReversed(),
 }
 
+const predictionData = {
+  seriesNames : ['Fråga', ...currentPredictionData[0]],
+  results: currentPredictionData.filter( (arr, index) => index > 0 ),
+  seriesColors: {
+    samre: partyData.seriesColors.s,
+    samma: partyData.seriesColors.ovr,
+    battre: partyData.seriesColors.mp,
+  },
+}
 
 // Constructor for options object
 function Options() {
@@ -151,6 +135,7 @@ function drawCharts() {
   drawChangeAnnot(partyData, 'changeSinceElection', 'electionChange', 'Förändring sedan valet');
   // drawElectionChange(partyData, 'electionChange', 'Förändring sedan valet 2022');
   drawStacked(partyData, 'stackedChart', 'Spridningsdiagram');
+  drawStacked(predictionData,'stackedYears','Jämfört med 2023, hur blir 2024?', true);
   // drawBarsV(partyData, 'barChartV', 'Stående kolumner med tooltips'); 
   // drawBarsH(partyData, 'barChartH', 'Liggande kolumner');
   drawLines(partyData, 'lineChart', 'Trend per parti');
@@ -289,9 +274,10 @@ function drawElectionChange(dataObject, chartId, title = "") {
 }
 
 // Stacked for spread across categories
-function drawStacked(dataObject, chartId, title = "") {
+function drawStacked(dataObject, chartId, title = "", multi = false) {
 
   const options = new Options();
+  options.colors = Object.values(dataObject.seriesColors),
   options.isStacked = 'percent';
   options.title = title;
   options.hAxis = {
@@ -305,10 +291,15 @@ function drawStacked(dataObject, chartId, title = "") {
     },
    }
   
-  const data = new google.visualization.arrayToDataTable([
+  const data = new google.visualization.arrayToDataTable( multi ? [
+    [...dataObject.seriesNames],
+    ...dataObject.results,
+  ] :
+  [
     ['', ...dataObject.seriesNames],
     ['', ...dataObject.results],
-  ]);
+      ]
+  );
 
   const chart = new google.visualization.BarChart(
     document.getElementById(chartId)
@@ -442,4 +433,44 @@ function drawTable(dataObject, chartId, transposeTable) {
 }
 
 
+////// UTILITIES
 
+// Utility for table
+function createDataArrayFromString(stringData){
+  // gör generell tvätt först:
+  let replaced = stringData.replaceAll(',', '.').replaceAll('\t', ', ');
+
+  if (replaced.indexOf('\n') > 0) {
+    let arrOfStrings = replaced.split('\n');
+    let arrOfArrs = arrOfStrings.map( item => item.split(', '));
+    if (arrOfArrs[arrOfArrs.length -1].length == 1) arrOfArrs.pop();
+    return arrOfArrs.map( array => convertItemsToNumber(array));
+  }
+
+  return convertItemsToNumber(replaced.split(', '));
+
+}
+
+
+function convertItemsToNumber(arr) {
+  let mapped = arr.map( (item, index) => { if ( isNaN(item) ) {
+    return item 
+  } else {
+    return +item
+    }
+  });
+  return mapped;
+}
+
+// Utility for single columns
+function createDataArrayFromStringVertical(stringData){
+  let replaced = stringData.replaceAll(',', '.').replaceAll('\n', ', ');
+  let asArray = replaced.split(', ');
+  if (asArray[asArray.length -1] == '') asArray.pop();
+  return asArray.map( (item, index) => { if ( isNaN(item) ) {
+    return item 
+  } else {
+    return +item
+    }
+  });
+}
